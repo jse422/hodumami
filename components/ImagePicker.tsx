@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 interface Props {
   file: File | null
@@ -10,7 +10,19 @@ interface Props {
 
 export default function ImagePicker({ file, existingUrl, onChange }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const preview = file ? URL.createObjectURL(file) : existingUrl ?? null
+  const [objectUrl, setObjectUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!file) {
+      setObjectUrl(null)
+      return
+    }
+    const url = URL.createObjectURL(file)
+    setObjectUrl(url)
+    return () => URL.revokeObjectURL(url)
+  }, [file])
+
+  const preview = objectUrl ?? existingUrl ?? null
 
   return (
     <div

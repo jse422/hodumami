@@ -6,6 +6,7 @@ import { Category } from '@/types/product'
 import { supabase } from '@/lib/supabase'
 import { categories, inputClass, Field } from '@/components/ProductForm'
 import ImagePicker from '@/components/ImagePicker'
+import ImageSearch from '@/components/ImageSearch'
 
 export default function NewProductPage() {
   const router = useRouter()
@@ -20,6 +21,8 @@ export default function NewProductPage() {
     is_wishlist: false,
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageTab, setImageTab] = useState<'upload' | 'search'>('upload')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -31,12 +34,17 @@ export default function NewProductPage() {
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
+  const handleSearchSelect = (url: string) => {
+    setImageUrl(url)
+    setImageFile(null)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    let image_path: string | null = null
+    let image_path: string | null = imageUrl
 
     if (imageFile) {
       const ext = imageFile.name.split('.').pop()
@@ -65,14 +73,14 @@ export default function NewProductPage() {
     })
 
     setLoading(false)
-
     if (error) {
       setError('저장에 실패했어요. 다시 시도해주세요.')
       return
     }
-
     router.push('/products')
   }
+
+  const previewUrl = imageFile ? undefined : (imageUrl ?? undefined)
 
   return (
     <div className="px-4 pt-12 pb-4">
@@ -88,7 +96,43 @@ export default function NewProductPage() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <Field label="사진">
-          <ImagePicker file={imageFile} onChange={setImageFile} />
+          <div className="flex gap-2 mb-3">
+            {(['upload', 'search'] as const).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setImageTab(tab)}
+                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  imageTab === tab
+                    ? 'bg-rose-400 text-white'
+                    : 'bg-white text-gray-400 border border-gray-200'
+                }`}
+              >
+                {tab === 'upload' ? '직접 업로드' : '검색해서 추가'}
+              </button>
+            ))}
+          </div>
+          {imageTab === 'upload' ? (
+            <ImagePicker
+              file={imageFile}
+              existingUrl={previewUrl}
+              onChange={(f) => { setImageFile(f); setImageUrl(null) }}
+            />
+          ) : (
+            <ImageSearch onSelect={handleSearchSelect} />
+          )}
+          {imageUrl && imageTab === 'search' && (
+            <div className="mt-2 relative w-24 h-24 rounded-xl overflow-hidden">
+              <img src={imageUrl} alt="선택된 이미지" className="w-full h-full object-cover" />
+              <button
+                type="button"
+                onClick={() => setImageUrl(null)}
+                className="absolute top-1 right-1 w-5 h-5 bg-black/50 text-white rounded-full text-xs flex items-center justify-center"
+              >
+                ×
+              </button>
+            </div>
+          )}
         </Field>
 
         <Field label="제품명 *">

@@ -31,7 +31,12 @@ export default function ProductDetailPage() {
   const handleDelete = async () => {
     if (!confirm('정말 삭제할까요?')) return
     setDeleting(true)
-    await supabase.from('products').delete().eq('id', id)
+    const { error } = await supabase.from('products').delete().eq('id', id)
+    if (error) {
+      alert('삭제에 실패했어요. 다시 시도해주세요.')
+      setDeleting(false)
+      return
+    }
     router.push('/products')
   }
 
@@ -89,17 +94,19 @@ export default function ProductDetailPage() {
       </div>
 
       {/* 정보 카드 */}
-      <div className="bg-white rounded-2xl shadow-sm mb-4 overflow-hidden">
-        {product.purchase_date && (
-          <InfoRow label="구매일" value={product.purchase_date} />
-        )}
-        {product.opened_date && (
-          <InfoRow label="개봉일" value={product.opened_date} />
-        )}
-        {product.expiry_date && (
-          <InfoRow label="유통기한" value={product.expiry_date} last />
-        )}
-      </div>
+      {(product.purchase_date || product.opened_date || product.expiry_date) && (
+        <div className="bg-white rounded-2xl shadow-sm mb-4 overflow-hidden">
+          {product.purchase_date && (
+            <InfoRow label="구매일" value={product.purchase_date} />
+          )}
+          {product.opened_date && (
+            <InfoRow label="개봉일" value={product.opened_date} />
+          )}
+          {product.expiry_date && (
+            <InfoRow label="유통기한" value={product.expiry_date} last />
+          )}
+        </div>
+      )}
 
       {/* 메모 */}
       {product.memo && (

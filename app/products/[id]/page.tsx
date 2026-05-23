@@ -14,6 +14,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(false)
+  const [togglingWishlist, setTogglingWishlist] = useState(false)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,6 +28,18 @@ export default function ProductDetailPage() {
     }
     fetchProduct()
   }, [id])
+
+  const handleWishlistToggle = async () => {
+    if (!product || togglingWishlist) return
+    setTogglingWishlist(true)
+    const next = !product.is_wishlist
+    const { error } = await supabase
+      .from('products')
+      .update({ is_wishlist: next })
+      .eq('id', id)
+    if (!error) setProduct({ ...product, is_wishlist: next })
+    setTogglingWishlist(false)
+  }
 
   const handleDelete = async () => {
     if (!confirm('정말 삭제할까요?')) return
@@ -70,7 +83,18 @@ export default function ProductDetailPage() {
         >
           ←
         </button>
-        <h1 className="text-xl font-bold text-gray-800">제품 상세</h1>
+        <h1 className="text-xl font-bold text-gray-800 flex-1">제품 상세</h1>
+        <button
+          onClick={handleWishlistToggle}
+          disabled={togglingWishlist}
+          className={`w-9 h-9 flex items-center justify-center rounded-full shadow-sm text-lg transition-colors ${
+            product.is_wishlist
+              ? 'bg-rose-400 text-white'
+              : 'bg-white text-gray-300'
+          }`}
+        >
+          ♥
+        </button>
       </div>
 
       {/* 제품 헤더 카드 */}

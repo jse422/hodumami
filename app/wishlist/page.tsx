@@ -11,12 +11,12 @@ export default function WishlistPage() {
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('products')
         .select('*')
         .eq('is_wishlist', true)
         .order('created_at', { ascending: false })
-      setWishlist(data ?? [])
+      if (!error) setWishlist(data ?? [])
       setLoading(false)
     }
     fetchWishlist()

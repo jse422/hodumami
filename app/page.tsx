@@ -13,11 +13,11 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('products')
         .select('*')
         .order('created_at', { ascending: false })
-      setProducts(data ?? [])
+      if (!error) setProducts(data ?? [])
       setLoading(false)
     }
     fetchProducts()

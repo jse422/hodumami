@@ -20,7 +20,7 @@ export default function BottomNav() {
           if (item.isMain) {
             return (
               <Link key={item.href} href={item.href} className="flex flex-col items-center -mt-5">
-                <div className="w-14 h-14 rounded-full bg-rose-400 flex items-center justify-center shadow-lg shadow-rose-200">
+                <div className="w-14 h-14 rounded-full bg-[#C8A882] flex items-center justify-center shadow-lg shadow-[#E0CDB5]">
                   <span className="text-3xl text-white leading-none">+</span>
                 </div>
               </Link>
@@ -33,7 +33,7 @@ export default function BottomNav() {
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center py-3 px-5 gap-0.5 transition-colors ${
-                isActive ? 'text-rose-400' : 'text-gray-400'
+                isActive ? 'text-[#C8A882]' : 'text-gray-400'
               }`}
             >
               <span className="text-xl">{item.icon}</span>

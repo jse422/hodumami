@@ -43,13 +43,13 @@ export default function ImageSearch({ onSelect }: Props) {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="예) 이니스프리 수분크림"
-          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-800 placeholder-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200 focus:border-rose-300"
+          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-800 placeholder-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-[#E0CDB5] focus:border-[#D4B896]"
         />
         <button
           type="button"
           onClick={handleSearch}
           disabled={loading}
-          className="px-4 py-3 bg-rose-400 text-white text-sm font-medium rounded-xl disabled:opacity-60"
+          className="px-4 py-3 bg-[#C8A882] text-white text-sm font-medium rounded-xl disabled:opacity-60"
         >
           {loading ? '...' : '검색'}
         </button>

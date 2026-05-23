@@ -40,7 +40,7 @@ export default function ProductsPage() {
             onClick={() => setSelected(cat)}
             className={`flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               selected === cat
-                ? 'bg-rose-400 text-white'
+                ? 'bg-[#C8A882] text-white'
                 : 'bg-white text-gray-500 border border-gray-200'
             }`}
           >

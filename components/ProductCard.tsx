@@ -9,7 +9,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/products/${product.id}`} className="bg-white rounded-2xl p-4 flex gap-3 shadow-sm active:opacity-70 transition-opacity">
-      <div className="w-16 h-16 rounded-xl bg-rose-50 flex items-center justify-center flex-shrink-0 text-2xl overflow-hidden">
+      <div className="w-16 h-16 rounded-xl bg-[#F5EFE6] flex items-center justify-center flex-shrink-0 text-2xl overflow-hidden">
         {product.image_path
           ? <img src={getImageUrl(product.image_path)} alt={product.name} className="w-full h-full object-cover" />
           : categoryEmoji(product.category)}
@@ -22,7 +22,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center gap-2 mt-1.5">
           {status && <ExpiryBadge status={status} />}
           {product.is_wishlist && (
-            <span className="text-xs text-rose-400 font-medium">♥ 또살템</span>
+            <span className="text-xs text-[#C8A882] font-medium">♥ 또살템</span>
           )}
         </div>
       </div>

@@ -53,7 +53,7 @@ export default function HomePage() {
 
       <div className="flex items-center justify-between mb-3">
         <h2 className="font-semibold text-gray-700">최근 등록</h2>
-        <Link href="/products" className="text-sm text-rose-400">
+        <Link href="/products" className="text-sm text-[#C8A882]">
           전체 보기 →
         </Link>
       </div>

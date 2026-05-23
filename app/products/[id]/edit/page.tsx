@@ -137,7 +137,7 @@ export default function EditProductPage() {
                 onClick={() => setImageTab(tab)}
                 className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
                   imageTab === tab
-                    ? 'bg-rose-400 text-white'
+                    ? 'bg-[#C8A882] text-white'
                     : 'bg-white text-gray-400 border border-gray-200'
                 }`}
               >
@@ -207,7 +207,7 @@ export default function EditProductPage() {
 
         <label className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-sm cursor-pointer">
           <input type="checkbox" name="is_wishlist" checked={form.is_wishlist}
-            onChange={handleChange} className="w-5 h-5 rounded accent-rose-400" />
+            onChange={handleChange} className="w-5 h-5 rounded accent-[#C8A882]" />
           <div>
             <p className="text-sm font-medium text-gray-700">또살템으로 등록</p>
             <p className="text-xs text-gray-400">다시 구매하고 싶은 제품이에요</p>
@@ -217,7 +217,7 @@ export default function EditProductPage() {
         {error && <p className="text-sm text-red-400 text-center">{error}</p>}
 
         <button type="submit" disabled={loading}
-          className="w-full py-4 bg-rose-400 text-white font-semibold rounded-2xl mt-2 active:bg-rose-500 transition-colors text-base shadow-sm shadow-rose-200 disabled:opacity-60">
+          className="w-full py-4 bg-[#C8A882] text-white font-semibold rounded-2xl mt-2 active:bg-[#B8956E] transition-colors text-base shadow-sm shadow-[#E0CDB5] disabled:opacity-60">
           {loading ? '저장 중...' : '저장하기'}
         </button>
       </form>

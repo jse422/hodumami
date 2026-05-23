@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
       <div className="flex flex-col items-center justify-center min-h-screen text-gray-400 gap-3">
         <p className="text-5xl">🧴</p>
         <p className="text-sm">제품을 찾을 수 없어요</p>
-        <Link href="/products" className="text-sm text-rose-400 mt-2">목록으로 →</Link>
+        <Link href="/products" className="text-sm text-[#C8A882] mt-2">목록으로 →</Link>
       </div>
     )
   }
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
           disabled={togglingWishlist}
           className={`w-9 h-9 flex items-center justify-center rounded-full shadow-sm text-lg transition-colors ${
             product.is_wishlist
-              ? 'bg-rose-400 text-white'
+              ? 'bg-[#C8A882] text-white'
               : 'bg-white text-gray-300'
           }`}
         >
@@ -100,7 +100,7 @@ export default function ProductDetailPage() {
       {/* 제품 헤더 카드 */}
       <div className="bg-white rounded-2xl p-5 shadow-sm mb-4">
         <div className="flex gap-4 items-center">
-          <div className="w-20 h-20 rounded-xl bg-rose-50 flex items-center justify-center text-4xl flex-shrink-0 overflow-hidden">
+          <div className="w-20 h-20 rounded-xl bg-[#F5EFE6] flex items-center justify-center text-4xl flex-shrink-0 overflow-hidden">
             {product.image_path
               ? <img src={getImageUrl(product.image_path)} alt={product.name} className="w-full h-full object-cover" />
               : categoryEmoji(product.category)}
@@ -112,7 +112,7 @@ export default function ProductDetailPage() {
             <div className="flex items-center gap-2 mt-2">
               {status && <ExpiryBadge status={status} />}
               {product.is_wishlist && (
-                <span className="text-xs text-rose-400 font-medium">♥ 또살템</span>
+                <span className="text-xs text-[#C8A882] font-medium">♥ 또살템</span>
               )}
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
       <div className="flex gap-3">
         <Link
           href={`/products/${id}/edit`}
-          className="flex-1 py-4 bg-rose-400 text-white font-semibold rounded-2xl text-center text-base shadow-sm shadow-rose-200"
+          className="flex-1 py-4 bg-[#C8A882] text-white font-semibold rounded-2xl text-center text-base shadow-sm shadow-[#E0CDB5]"
         >
           수정
         </Link>

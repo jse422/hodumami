@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 
 interface ImageResult {
   thumbnail: string
@@ -17,7 +17,6 @@ export default function ImageSearch({ onSelect }: Props) {
   const [results, setResults] = useState<ImageResult[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSearch = async () => {
     if (!query.trim()) return
@@ -40,7 +39,6 @@ export default function ImageSearch({ onSelect }: Props) {
     <div className="flex flex-col gap-3">
       <div className="flex gap-2">
         <input
-          ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}

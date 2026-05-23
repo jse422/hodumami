@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Product } from '@/types/product'
 import { getExpiryStatus, categoryEmoji } from '@/lib/utils'
 import ExpiryBadge from './ExpiryBadge'
@@ -6,7 +7,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const status = getExpiryStatus(product.expiry_date)
 
   return (
-    <div className="bg-white rounded-2xl p-4 flex gap-3 shadow-sm">
+    <Link href={`/products/${product.id}`} className="bg-white rounded-2xl p-4 flex gap-3 shadow-sm active:opacity-70 transition-opacity">
       <div className="w-16 h-16 rounded-xl bg-rose-50 flex items-center justify-center flex-shrink-0 text-2xl">
         {product.image_path
           ? <img src={product.image_path} alt={product.name} className="w-full h-full object-cover rounded-xl" />
@@ -31,6 +32,6 @@ export default function ProductCard({ product }: { product: Product }) {
           <p className="text-xs font-medium text-gray-600 mt-0.5">{product.expiry_date}</p>
         </div>
       )}
-    </div>
+    </Link>
   )
 }

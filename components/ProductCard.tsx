@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Product } from '@/types/product'
 import { getExpiryStatus, categoryEmoji } from '@/lib/utils'
+import { getImageUrl } from '@/lib/supabase'
 import ExpiryBadge from './ExpiryBadge'
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -8,9 +9,9 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/products/${product.id}`} className="bg-white rounded-2xl p-4 flex gap-3 shadow-sm active:opacity-70 transition-opacity">
-      <div className="w-16 h-16 rounded-xl bg-rose-50 flex items-center justify-center flex-shrink-0 text-2xl">
+      <div className="w-16 h-16 rounded-xl bg-rose-50 flex items-center justify-center flex-shrink-0 text-2xl overflow-hidden">
         {product.image_path
-          ? <img src={product.image_path} alt={product.name} className="w-full h-full object-cover rounded-xl" />
+          ? <img src={getImageUrl(product.image_path)} alt={product.name} className="w-full h-full object-cover" />
           : categoryEmoji(product.category)}
       </div>
 

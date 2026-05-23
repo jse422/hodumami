@@ -5,6 +5,8 @@ import { useRouter, useParams } from 'next/navigation'
 import { Category } from '@/types/product'
 import { supabase } from '@/lib/supabase'
 import { categories, inputClass, Field } from '@/components/ProductForm'
+import ImagePicker from '@/components/ImagePicker'
+import { getImageUrl } from '@/lib/supabase'
 
 type FormState = {
   name: string
@@ -21,6 +23,8 @@ export default function EditProductPage() {
   const router = useRouter()
   const { id } = useParams<{ id: string }>()
   const [form, setForm] = useState<FormState | null>(null)
+  const [existingImagePath, setExistingImagePath] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -42,6 +46,7 @@ export default function EditProductPage() {
           memo: data.memo ?? '',
           is_wishlist: data.is_wishlist ?? false,
         })
+        setExistingImagePath(data.image_path ?? null)
       }
     }
     fetchProduct()
@@ -61,6 +66,22 @@ export default function EditProductPage() {
     setLoading(true)
     setError('')
 
+    let image_path = existingImagePath
+
+    if (imageFile) {
+      const ext = imageFile.name.split('.').pop()
+      const filePath = `${Date.now()}.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(filePath, imageFile)
+      if (uploadError) {
+        setError('사진 업로드에 실패했어요. 다시 시도해주세요.')
+        setLoading(false)
+        return
+      }
+      image_path = filePath
+    }
+
     const { error } = await supabase.from('products').update({
       name: form.name,
       brand: form.brand || null,
@@ -70,6 +91,7 @@ export default function EditProductPage() {
       expiry_date: form.expiry_date || null,
       memo: form.memo || null,
       is_wishlist: form.is_wishlist,
+      image_path,
     }).eq('id', id)
 
     setLoading(false)
@@ -103,6 +125,14 @@ export default function EditProductPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <Field label="사진">
+          <ImagePicker
+            file={imageFile}
+            existingUrl={existingImagePath ? getImageUrl(existingImagePath) : undefined}
+            onChange={setImageFile}
+          />
+        </Field>
+
         <Field label="제품명 *">
           <input name="name" value={form.name} onChange={handleChange}
             placeholder="예) 수분크림" required className={inputClass} />

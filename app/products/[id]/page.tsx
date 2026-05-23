@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Product } from '@/types/product'
-import { supabase } from '@/lib/supabase'
+import { supabase, getImageUrl } from '@/lib/supabase'
 import { getExpiryStatus, categoryEmoji } from '@/lib/utils'
 import ExpiryBadge from '@/components/ExpiryBadge'
 
@@ -100,8 +100,10 @@ export default function ProductDetailPage() {
       {/* 제품 헤더 카드 */}
       <div className="bg-white rounded-2xl p-5 shadow-sm mb-4">
         <div className="flex gap-4 items-center">
-          <div className="w-20 h-20 rounded-xl bg-rose-50 flex items-center justify-center text-4xl flex-shrink-0">
-            {categoryEmoji(product.category)}
+          <div className="w-20 h-20 rounded-xl bg-rose-50 flex items-center justify-center text-4xl flex-shrink-0 overflow-hidden">
+            {product.image_path
+              ? <img src={getImageUrl(product.image_path)} alt={product.name} className="w-full h-full object-cover" />
+              : categoryEmoji(product.category)}
           </div>
           <div className="flex-1 min-w-0">
             {product.brand && <p className="text-sm text-gray-400">{product.brand}</p>}

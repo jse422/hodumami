@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { sampleProducts } from '@/lib/sample-data'
-import { Category } from '@/types/product'
+import { useEffect, useState } from 'react'
+import { Category, Product } from '@/types/product'
+import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
 
 const categories: (Category | '전체')[] = [
@@ -10,18 +10,29 @@ const categories: (Category | '전체')[] = [
 ]
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([])
   const [selected, setSelected] = useState<Category | '전체'>('전체')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+      setProducts(data ?? [])
+      setLoading(false)
+    }
+    fetchProducts()
+  }, [])
 
   const filtered =
-    selected === '전체'
-      ? sampleProducts
-      : sampleProducts.filter((p) => p.category === selected)
+    selected === '전체' ? products : products.filter((p) => p.category === selected)
 
   return (
     <div className="px-4 pt-14 pb-4">
       <h1 className="text-2xl font-bold text-gray-800 mb-4">화장품 목록</h1>
 
-      {/* 카테고리 필터 */}
       <div className="flex gap-2 overflow-x-auto pb-3 mb-4">
         {categories.map((cat) => (
           <button
@@ -38,9 +49,13 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      {/* 목록 */}
       <div className="flex flex-col gap-3">
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-20 text-gray-300">
+            <p className="text-5xl mb-3">⏳</p>
+            <p className="text-sm">불러오는 중...</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <p className="text-5xl mb-3">🧴</p>
             <p className="text-sm">등록된 화장품이 없어요</p>

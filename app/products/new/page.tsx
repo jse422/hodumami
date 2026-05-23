@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Category } from '@/types/product'
+import { supabase } from '@/lib/supabase'
 
 const categories: Category[] = ['스킨케어', '메이크업', '선케어', '바디케어', '헤어케어', '기타']
 
@@ -21,6 +22,8 @@ export default function NewProductPage() {
     memo: '',
     is_wishlist: false,
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -30,9 +33,30 @@ export default function NewProductPage() {
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    alert('MVP 2단계에서 실제 저장 기능이 추가될 예정이에요!')
+    setLoading(true)
+    setError('')
+
+    const { error } = await supabase.from('products').insert({
+      name: form.name,
+      brand: form.brand || null,
+      category: form.category,
+      purchase_date: form.purchase_date || null,
+      opened_date: form.opened_date || null,
+      expiry_date: form.expiry_date || null,
+      memo: form.memo || null,
+      is_wishlist: form.is_wishlist,
+    })
+
+    setLoading(false)
+
+    if (error) {
+      setError('저장에 실패했어요. 다시 시도해주세요.')
+      return
+    }
+
+    router.push('/products')
   }
 
   return (
@@ -139,11 +163,14 @@ export default function NewProductPage() {
           </div>
         </label>
 
+        {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+
         <button
           type="submit"
-          className="w-full py-4 bg-rose-400 text-white font-semibold rounded-2xl mt-2 active:bg-rose-500 transition-colors text-base shadow-sm shadow-rose-200"
+          disabled={loading}
+          className="w-full py-4 bg-rose-400 text-white font-semibold rounded-2xl mt-2 active:bg-rose-500 transition-colors text-base shadow-sm shadow-rose-200 disabled:opacity-60"
         >
-          등록하기
+          {loading ? '저장 중...' : '등록하기'}
         </button>
       </form>
     </div>

@@ -24,7 +24,10 @@ export default function HomePage() {
   }, [])
 
   const total = products.length
-  const expiring = products.filter((p) => getExpiryStatus(p.expiry_date) === '주의').length
+  const expiring = products.filter((p) => {
+    const s = getExpiryStatus(p.expiry_date)
+    return s === '주의' || s === '위험'
+  }).length
   const expired = products.filter((p) => getExpiryStatus(p.expiry_date) === '만료').length
   const recent = products.slice(0, 3)
 

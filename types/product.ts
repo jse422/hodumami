@@ -1,6 +1,6 @@
 export type Category = '스킨케어' | '메이크업' | '선케어' | '바디케어' | '헤어케어' | '기타'
 
-export type ExpiryStatus = '정상' | '주의' | '만료'
+export type ExpiryStatus = '정상' | '주의' | '위험' | '만료'
 
 export interface Product {
   id: string

@@ -8,8 +8,9 @@ export function getExpiryStatus(expiryDate?: string): ExpiryStatus | null {
   const expiry = new Date(expiryDate)
   const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-  if (diffDays < 0) return '만료'
-  if (diffDays <= 30) return '주의'
+  if (diffDays <= 0) return '만료'
+  if (diffDays <= 6) return '위험'
+  if (diffDays <= 29) return '주의'
   return '정상'
 }
 
